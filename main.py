@@ -6,14 +6,14 @@ commonSave = {}
 with open("serverside.json", "r") as serverside:
     commonSave = json.load(serverside)
 
-# Répertorie les succès finis
+# Lists completed achievements
 finishedAdv = []
 for key, value in commonSave.items():
     if value["done"]:
         finishedAdv.append(key)
 
 # server\world\advancements
-# Choppe les Data Version pour chaque joueur
+# Get the Data Version for each player
 playersDataVersion = {}
 playerList = []
 
@@ -25,7 +25,7 @@ for i in playerList:
         playerAdv = json.load(file)
         playersDataVersion[i] = {"DataVersion": playerAdv["DataVersion"]}
 
-# Modifie le json serverside
+# Edit the serverside json
 for i in playerList:
     with open(i, "r") as file:
         playerAdv = json.load(file)
@@ -47,11 +47,12 @@ os.chdir("..\\..\\..")
 with open("serverside.json", "w") as file:
     json.dump(commonSave, file, indent=4)
 
-# Réécrit le serverside pour chaque joueur
+# Rewrites serverside for each player
 os.chdir("server\\world\\advancements")
 for i in playerList:
     with open(i, "w") as file:
         playerCommonSave = commonSave
         playerCommonSave["DataVersion"] = playersDataVersion[i]["DataVersion"]
         json.dump(playerCommonSave, file, indent=4)
+
 
